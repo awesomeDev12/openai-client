@@ -45,8 +45,8 @@ class Widget(QWidget):
         save_button = QPushButton("Save")
         save_button.clicked.connect(self.save_button_clicked)
 
-        read_button = QPushButton("Read")
-        read_button.clicked.connect(self.read_button_clicked)
+        # read_button = QPushButton("Read")
+        # read_button.clicked.connect(self.read_button_clicked)
 
 
         copy_output_button = QPushButton("Copy Output")
@@ -67,7 +67,7 @@ class Widget(QWidget):
         h_layout1.addWidget(save_button)
         h_layout1.addWidget(copy_output_button)
         h_layout1.addWidget(submit_button)
-        h_layout1.addWidget(read_button)
+        # h_layout1.addWidget(read_button)
 
         h_layout2 = QHBoxLayout()
         h_layout2.addWidget(self.input_text_edit)
@@ -104,5 +104,5 @@ class Widget(QWidget):
         output_string = self.output_text_edit.toPlainText()
         self.storage.insert(input_string,output_string)
 
-    def read_button_clicked(self):
-        self.storage.read()
+    # def read_button_clicked(self):
+    #     self.storage.read()

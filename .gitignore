@@ -3,3 +3,4 @@ __pycache__/
 venv/
 apikey.py
 log.txt
+history_log.json
