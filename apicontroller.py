@@ -8,8 +8,11 @@ openai.api_key = OPENAI_API_KEY
 
 class APIController:
     def __init__(self):
-        self.query_text_settings = QueryTextSettings()
-        self.query_text_settings.set_max_tokens(60)
+        self.query_text_settings = QueryTextSettings(model="curie",temperature=0,max_tokens=60)
+        self.query_text_settings.set_model("text-davinci-003")
+        self.query_text_settings.set_max_tokens(500)
+
+        print(self.query_text_settings.get_settings())
 
     # Get response usingthe api
     def get_response_string(self,prompt_string):

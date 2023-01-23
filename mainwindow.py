@@ -42,9 +42,15 @@ class MainWindow (QMainWindow):
         clear_history_action.triggered.connect(self.clear_history_action_clicked)
         history_menu.addAction(clear_history_action)
 
+        # Settings menu
+        settings_menu = menu_bar.addMenu("Setting")
+        settings_menu.addAction("Ada")
+        settings_menu.addAction("Babbage")
+        settings_menu.addAction("Curie")
+        settings_menu.addAction("Da Vinci")
+
         # Other Menus
         menu_bar.addMenu("Window")
-        menu_bar.addMenu("Setting")
         menu_bar.addMenu("Help")
 
 

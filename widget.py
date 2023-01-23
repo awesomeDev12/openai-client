@@ -95,7 +95,11 @@ class Widget(QWidget):
         output_dic = self.api_controller.get_response_string(input_string)
         if output_dic["status"] == True:
             # First two lines provided by the API is empty
-            output_string = output_dic["text"].split("\n", 2)[2]
+            # output_string = output_dic["text"].split("\n", 2)[2]
+            output_string = output_dic["text"]
+            # New Query added to history
+            storage = Storage()
+            storage.insert(input_string,output_string)
         else :
             # If the response status is failure the Print the Error message
             output_string = output_dic["text"]
