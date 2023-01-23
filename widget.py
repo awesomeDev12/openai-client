@@ -1,8 +1,9 @@
 from PySide6 import QtGui
-from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox
 from PySide6.QtGui import QClipboard
 from apicontroller import APIController
 from storage import Storage
+import json
 
 class Widget(QWidget):
     def __init__(self):
@@ -43,11 +44,16 @@ class Widget(QWidget):
         clear_button.clicked.connect(self.input_text_edit.clear)
 
 
-        clear_all_button = QPushButton("Clear All")
-        clear_all_button.clicked.connect(self.clear_all_button_clicked)
+
 
         save_button = QPushButton("Save")
         save_button.clicked.connect(self.save_button_clicked)
+
+        clear_all_button = QPushButton("Clear All")
+        clear_all_button.clicked.connect(self.clear_all_button_clicked)
+
+        show_history_button = QPushButton("Show History")
+        show_history_button.clicked.connect(self.show_history_button_clicked)
 
         # read_button = QPushButton("Read")
         # read_button.clicked.connect(self.read_button_clicked)
@@ -68,8 +74,10 @@ class Widget(QWidget):
         h_layout1.addWidget(undo_button)
         h_layout1.addWidget(redo_button)
         h_layout1.addWidget(clear_button)
-        h_layout1.addWidget(clear_all_button)
         h_layout1.addWidget(save_button)
+
+        h_layout1.addWidget(clear_all_button)
+        h_layout1.addWidget(show_history_button)
         h_layout1.addWidget(copy_output_button)
         h_layout1.addWidget(submit_button)
         # h_layout1.addWidget(read_button)
@@ -122,7 +130,31 @@ class Widget(QWidget):
         self.input_text_edit.clear()
         self.output_text_edit.clear()
 
+    def show_history_button_clicked(self):
+        print("Button-Hard clicked")
+        message = QMessageBox()
+        message.setMinimumSize(700, 300)
+        message.setWindowTitle("Chat History")
 
+        storage = Storage()
+        history_list = storage.get_history()
+        history_list.reverse()
+        history_string = json.dumps(history_list, indent=4)
+
+        message.setText(f"This is the chat history {history_string}")
+        message.setInformativeText("Do you want to do something about it")
+        # message.setIcon(QMessageBox.Critical)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        message.setDefaultButton(QMessageBox.Ok)
+
+        # Show the message box
+        ret = message.exec()
+        if ret == QMessageBox.Ok:
+            print("User chose Ok")
+        elif ret == QMessageBox.Cancel:
+            print("User chose Cancel")
+        else:
+            print("User chose unknown button")
 
     # def read_button_clicked(self):
     #     self.storage.read()
