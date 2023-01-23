@@ -30,7 +30,7 @@ class Widget(QWidget):
 
         # connect the search bar to the text browser
         self.search_bar.textChanged.connect(self.history_text_browser.find)
-        self.search_bar.returnPressed.connect(self.history_text_browser.find)
+        # self.search_bar.returnPressed.connect(self.history_text_browser.find)
         # self.search_bar.editingFinished.connect(self.history_text_browser.find)
 
         # Buttons
