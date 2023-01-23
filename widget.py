@@ -102,6 +102,29 @@ class Widget(QWidget):
         self.input_text_edit.paste()
 
     def submit_button_clicked(self):
+        print("Submit button clicked")
+        message = QMessageBox()
+        message.setMinimumSize(700, 300)
+        message.setWindowTitle("Submit Confirmation")
+
+        message.setText("Do you want to submit this query")
+        message.setInformativeText("Click on Ok only if you have verified your query")
+        # message.setIcon(QMessageBox.Critical)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        message.setDefaultButton(QMessageBox.Cancel)
+
+        # Show the message box
+        ret = message.exec()
+        if ret == QMessageBox.Ok:
+            print("User chose Ok")
+            self.query_submit()
+        elif ret == QMessageBox.Cancel:
+            print("User chose Cancel")
+        else:
+            print("User chose unknown button")
+
+
+    def query_submit(self):
         input_string = self.input_text_edit.toPlainText()
         output_dic = self.api_controller.get_response_string(input_string)
         if output_dic["status"] == True:
@@ -110,14 +133,13 @@ class Widget(QWidget):
             output_string = output_dic["text"]
             # New Query added to history
             storage = Storage()
-            storage.insert(input_string,output_string)
-        else :
+            storage.insert(input_string, output_string)
+        else:
             # If the response status is failure the Print the Error message
             output_string = output_dic["text"]
 
         self.output_text_edit.clear()
         self.output_text_edit.setPlainText(output_string)
-
     def copy_output_button_clicked(self):
         output_string = self.output_text_edit.toPlainText()
         clipboard = QClipboard()
@@ -134,7 +156,7 @@ class Widget(QWidget):
         self.output_text_edit.clear()
 
     def show_history_button_clicked(self):
-        print("Button-Hard clicked")
+        print("Show History Button clicked")
         message = QMessageBox()
         message.setMinimumSize(700, 300)
         message.setWindowTitle("Chat History")
