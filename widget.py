@@ -34,14 +34,14 @@ class Widget(QWidget):
         # paste_button = QPushButton("Paste")  # Custom paste not built-in
         # paste_button.clicked.connect(self.paste_button_clicked)
 
-        undo_button = QPushButton("Undo")
-        undo_button.clicked.connect(self.input_text_edit.undo)
+        # undo_button = QPushButton("Undo")
+        # undo_button.clicked.connect(self.input_text_edit.undo)
+        #
+        # redo_button = QPushButton("Redo")
+        # redo_button.clicked.connect(self.input_text_edit.redo)
 
-        redo_button = QPushButton("Redo")
-        redo_button.clicked.connect(self.input_text_edit.redo)
-
-        clear_button = QPushButton("Clear Input")
-        clear_button.clicked.connect(self.input_text_edit.clear)
+        clear_input_button = QPushButton("Clear Input")
+        clear_input_button.clicked.connect(self.input_text_edit.clear)
 
 
 
@@ -71,14 +71,17 @@ class Widget(QWidget):
         # h_layout1.addWidget(copy_button)
         # h_layout1.addWidget(cut_button)
         # h_layout1.addWidget(paste_button)
-        h_layout1.addWidget(undo_button)
-        h_layout1.addWidget(redo_button)
-        h_layout1.addWidget(clear_button)
-        h_layout1.addWidget(save_button)
+        # h_layout1.addWidget(undo_button)
+        # h_layout1.addWidget(redo_button)
 
-        h_layout1.addWidget(clear_all_button)
         h_layout1.addWidget(show_history_button)
+
+        h_layout1.addWidget(clear_input_button)
+        h_layout1.addWidget(clear_all_button)
+
+
         h_layout1.addWidget(copy_output_button)
+        h_layout1.addWidget(save_button)
         h_layout1.addWidget(submit_button)
         # h_layout1.addWidget(read_button)
 

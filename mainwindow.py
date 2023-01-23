@@ -11,21 +11,54 @@ class MainWindow (QMainWindow):
         self.setWindowTitle("Custom Main Window")
 
 
+        # Central Widget
+        widget = Widget()
+
         # Menubar and menus
         menu_bar = self.menuBar()
 
         file_menu = menu_bar.addMenu("File")
         quit_action = file_menu.addAction("Quit")
+        quit_action.setStatusTip("Press this to Quit the Application")
         quit_action.triggered.connect(self.quit_app)
 
         # Edit menus
         edit_menu = menu_bar.addMenu("Edit")
-        edit_menu.addAction("Copy")
-        edit_menu.addAction("Cut")
-        edit_menu.addAction("Paste")
-        edit_menu.addAction("Paste")
-        edit_menu.addAction("Undo")
-        edit_menu.addAction("Redo")
+        # Edit Copy Action
+        edit_copy_action = QAction("Copy", self)
+        edit_copy_action.setStatusTip("Press this to See History")
+        edit_copy_action.triggered.connect(widget.input_text_edit.copy)
+        edit_menu.addAction(edit_copy_action)
+
+        # Edit Cut Action
+        edit_cut_action = QAction("Cut", self)
+        edit_cut_action.setStatusTip("Press this to See History")
+        edit_cut_action.triggered.connect(widget.input_text_edit.cut)
+        edit_menu.addAction(edit_cut_action)
+
+        # Edit Paste Action
+        edit_paste_action = QAction("Paste", self)
+        edit_paste_action.setStatusTip("Press this to See History")
+        edit_paste_action.triggered.connect(widget.input_text_edit.paste)
+        edit_menu.addAction(edit_paste_action)
+
+        # Edit Undo Action
+        edit_undo_action = QAction("Undo", self)
+        edit_undo_action.setStatusTip("Press this to See History")
+        edit_undo_action.triggered.connect(widget.input_text_edit.undo)
+        edit_menu.addAction(edit_undo_action)
+
+        # Edit Redo Action
+        edit_redo_action = QAction("Redo", self)
+        edit_redo_action.setStatusTip("Press this to See History")
+        edit_redo_action.triggered.connect(widget.input_text_edit.redo)
+        edit_menu.addAction(edit_redo_action)
+
+        # edit_menu.addAction("Cut")
+        # edit_menu.addAction("Paste")
+        # edit_menu.addAction("Paste")
+        # edit_menu.addAction("Undo")
+        # edit_menu.addAction("Redo")
 
         # History
         history_menu = menu_bar.addMenu("History")
@@ -82,8 +115,7 @@ class MainWindow (QMainWindow):
         # Working with Status Bar
         self.setStatusBar(QStatusBar(self))
 
-        # Central Widget
-        widget = Widget()
+        # Set Central Widget
         self.setCentralWidget(widget)
 
 
