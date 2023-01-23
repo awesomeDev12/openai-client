@@ -1,6 +1,7 @@
+import PySide6.QtCore
 from PySide6 import QtGui
-from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QSizePolicy, QTextBrowser, QLineEdit, QLabel,
-from PySide6.QtGui import QClipboard
+from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QTextBrowser, QLineEdit, QLabel
+from PySide6.QtGui import QClipboard, QTextDocument
 from apicontroller import APIController
 from storage import Storage
 import json
@@ -102,7 +103,7 @@ class Widget(QWidget):
 
     def previous_occurence(self):
         search_pattern = self.search_bar.text()
-        self.history_text_browser.find(search_pattern)
+        self.history_text_browser.find(search_pattern,QTextDocument.FindBackward)
 
     def submit_button_clicked(self):
         print("Submit button clicked")
