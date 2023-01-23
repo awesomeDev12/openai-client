@@ -1,5 +1,5 @@
 from PySide6 import QtGui
-from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QSizePolicy, QTextBrowser, QLineEdit, QLabel
+from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QSizePolicy, QTextBrowser, QLineEdit, QLabel,
 from PySide6.QtGui import QClipboard
 from apicontroller import APIController
 from storage import Storage
@@ -21,7 +21,6 @@ class Widget(QWidget):
         self.setMinimumSize(700, 500)
         self.input_text_edit = QTextEdit()
         self.input_text_edit.setFixedHeight(100)
-        # self.input_text_edit.textChanged.connect(self.text_changed)
 
         self.output_text_edit = QTextEdit()
 
@@ -54,11 +53,10 @@ class Widget(QWidget):
         submit_button.clicked.connect(self.submit_button_clicked)
 
         history_next_button = QPushButton("Next")
-        # history_next_button.clicked.connect(self.history_text_browser.find(self.search_bar.text()))
-        # history_next_button.clicked.connect(self.history_text_browser.forward)
+        history_next_button.clicked.connect(self.next_occurence)
 
         history_previous_button = QPushButton("Previous")
-        # history_previous_button.clicked.connect(self.history_text_browser.backward)
+        history_previous_button.clicked.connect(self.previous_occurence)
 
 
 
@@ -96,6 +94,15 @@ class Widget(QWidget):
 
         self.setLayout(v_layout)
 
+
+
+    def next_occurence(self):
+        search_pattern = self.search_bar.text()
+        self.history_text_browser.find(search_pattern)
+
+    def previous_occurence(self):
+        search_pattern = self.search_bar.text()
+        self.history_text_browser.find(search_pattern)
 
     def submit_button_clicked(self):
         print("Submit button clicked")
