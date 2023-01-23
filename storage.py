@@ -28,6 +28,7 @@ class Storage:
 
     def insert(self,input_string,output_string):
 
+        self.history_list = self.read()
         # using now() to get current time
         # current_time = datetime.datetime.now()
         current_time = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
@@ -55,3 +56,13 @@ class Storage:
         # print(f_data)
         return f_data
 
+    def clear_history(self):
+
+        self.history_list = []
+        # Serializing json
+        # json_object = json.dumps(self.history_list, indent=4)
+        json_object = json.dumps(self.history_list)
+
+        # Writing to history.json
+        with open(self.filename, "w") as outfile:
+            outfile.write(json_object)

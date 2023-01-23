@@ -30,11 +30,17 @@ class MainWindow (QMainWindow):
         # History
         history_menu = menu_bar.addMenu("History")
 
-        # Custom History Action
+        # Show History Action
         show_history_action = QAction("Show History", self)
         show_history_action.setStatusTip("Press this to See History")
         show_history_action.triggered.connect(self.show_history_action_clicked)
         history_menu.addAction(show_history_action)
+
+        # Clear History Action
+        clear_history_action = QAction("Clear History", self)
+        clear_history_action.setStatusTip("Press this to Clear History")
+        clear_history_action.triggered.connect(self.clear_history_action_clicked)
+        history_menu.addAction(clear_history_action)
 
         # Other Menus
         menu_bar.addMenu("Window")
@@ -71,9 +77,6 @@ class MainWindow (QMainWindow):
         self.setStatusBar(QStatusBar(self))
 
         # Central Widget
-        # button1 = QPushButton("Button 1")
-        # button1.clicked.connect(self.button1_clicked)
-
         widget = Widget()
         self.setCentralWidget(widget)
 
@@ -88,11 +91,9 @@ class MainWindow (QMainWindow):
         self.statusBar().showMessage("Message from Custom Action",3000)
         # 3000 is the timeout , this paramater is optional
 
-    def button1_clicked(self):
-        print("Button 1 clicked")
 
 
-# Hard way
+# History Actions
     def show_history_action_clicked(self):
         print("Button-Hard clicked")
         message = QMessageBox()
@@ -120,3 +121,30 @@ class MainWindow (QMainWindow):
             print("User chose unknown button")
 
 
+    def clear_history_action_clicked(self):
+        print("Clear History Action clicked")
+        message = QMessageBox()
+        message.setMinimumSize(700, 300)
+        message.setWindowTitle("Clear Chat History")
+
+        # storage = Storage()
+        # history_list = storage.get_history()
+        # history_list.reverse()
+        # history_string = json.dumps(history_list, indent=4)
+
+        message.setText("Do you want to Clear Chat History")
+        message.setInformativeText("Think Carefully Then Decide")
+        # message.setIcon(QMessageBox.Critical)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        message.setDefaultButton(QMessageBox.Ok)
+
+        # Show the message box
+        ret = message.exec()
+        if ret == QMessageBox.Ok:
+            print("User chose Ok")
+            storage = Storage()
+            storage.clear_history()
+        elif ret == QMessageBox.Cancel:
+            print("User chose Cancel")
+        else:
+            print("User chose unknown button")
