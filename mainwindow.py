@@ -136,7 +136,7 @@ class MainWindow (QMainWindow):
         message.setInformativeText("Think Carefully Then Decide")
         # message.setIcon(QMessageBox.Critical)
         message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        message.setDefaultButton(QMessageBox.Ok)
+        message.setDefaultButton(QMessageBox.Cancel)
 
         # Show the message box
         ret = message.exec()

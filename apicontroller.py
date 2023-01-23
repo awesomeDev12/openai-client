@@ -2,24 +2,25 @@
 
 import openai
 from apikey import OPENAI_API_KEY
-from myprompt import MyPrompt
+from querytextsettings import QueryTextSettings
 
 openai.api_key = OPENAI_API_KEY
 
 class APIController:
-    def __init__(self,prompt_string=""):
-        self.my_prompt = MyPrompt(prompt_string="")
-        self.my_prompt.set_max_tokens(499)
-        self.my_prompt.set_prompt_string(prompt_string)
+    def __init__(self):
+        self.query_text_settings = QueryTextSettings()
+        self.query_text_settings.set_max_tokens(60)
 
+    # Get response usingthe api
+    def get_response_string(self,prompt_string):
+        if len(prompt_string) < 6:
+            return {"status":False, "text": "Invalid Input : Prompt is too small"}
 
-    def set_prompt_string(self,prompt_string):
-        self.my_prompt.set_prompt_string(prompt_string)
-    # print the response
-    def get_response_string(self):
         # print(self.response.choices[0].text)
-        response = openai.Completion.create(model=self.my_prompt.model, prompt=self.my_prompt.prompt_string, temperature=self.my_prompt.temperature, max_tokens=self.my_prompt.max_tokens)
-        return response.choices[0].text
+        response = openai.Completion.create(model=self.query_text_settings.model, prompt=prompt_string, temperature=self.query_text_settings.temperature, max_tokens=self.query_text_settings.max_tokens)
+        output_dic = {"status":True, "text" : response.choices[0].text}
+        # return response.choices[0].text
+        return output_dic
 
 
 # list engines
