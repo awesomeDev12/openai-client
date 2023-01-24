@@ -1,7 +1,7 @@
 import json
 import os
 
-class StorageSettingsQuery:
+class StorageQuerySettings:
     def __init__(self):
         self.filename = "/home/darklord/Desktop/openai-client/query_settings.json"
 
@@ -10,7 +10,7 @@ class StorageSettingsQuery:
         default_query_settings = {
             "model" : "text-davinci-003",
             "temperature" : 0,
-            "max-tokens" : 500
+            "max_tokens" : 500
         }
 
         return default_query_settings
@@ -18,6 +18,7 @@ class StorageSettingsQuery:
     # Function takes a dictionary as input and stores it in the file
     def set_settings(self,new_settings):
         # Extract info from argument
+        # print("New Settings", new_settings)
         new_settings_modified = {
             "model": new_settings["model"],
             "temperature": new_settings["temperature"],

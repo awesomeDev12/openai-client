@@ -1,58 +1,68 @@
 from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit
 from PySide6.QtCore import QSize
-
+from storage_query_settings import StorageQuerySettings
 class EditQuerySettingsDialog(QDialog):
     def __init__(self):
         super().__init__()
 
-        # Text
+        # Text Tab
         widget_text = QWidget()
-        label_text_engine = QLabel("Engine :")
 
         # Radio buttons : answers
-        group_box_text_engine = QGroupBox("Engine")
-        radio_button_text_engine_davinci = QRadioButton("Da Vinci")
-        radio_button_text_engine_curie = QRadioButton("Curie")
-        radio_button_text_engine_babbage = QRadioButton("Babbage")
-        radio_button_text_engine_ada = QRadioButton("Ada")
-        radio_button_text_engine_davinci.setChecked(True)
+        self.group_box_text_engine = QGroupBox("Engine")
+        self.radio_button_text_engine_davinci = QRadioButton("Da Vinci")
+        self.radio_button_text_engine_davinci.toggled.connect(self.radio_button_text_engine_davinci_toggled)
+
+        self.radio_button_text_engine_curie = QRadioButton("Curie")
+        self.radio_button_text_engine_curie.toggled.connect(self.radio_button_text_engine_curie_toggled)
+
+        self.radio_button_text_engine_babbage = QRadioButton("Babbage")
+        self.radio_button_text_engine_babbage.toggled.connect(self.radio_button_text_engine_babbage_toggled)
+
+        self.radio_button_text_engine_ada = QRadioButton("Ada")
+        self.radio_button_text_engine_ada.toggled.connect(self.radio_button_text_engine_ada_toggled)
+
+        self.radio_button_text_engine_curie.setChecked(True)
 
         group_box_text_engine_layout = QVBoxLayout()
-        group_box_text_engine_layout.addWidget(radio_button_text_engine_davinci)
-        group_box_text_engine_layout.addWidget(radio_button_text_engine_curie)
-        group_box_text_engine_layout.addWidget(radio_button_text_engine_babbage)
-        group_box_text_engine_layout.addWidget(radio_button_text_engine_ada)
-        group_box_text_engine.setLayout(group_box_text_engine_layout)
+        group_box_text_engine_layout.addWidget(self.radio_button_text_engine_davinci)
+        group_box_text_engine_layout.addWidget(self.radio_button_text_engine_curie)
+        group_box_text_engine_layout.addWidget(self.radio_button_text_engine_babbage)
+        group_box_text_engine_layout.addWidget(self.radio_button_text_engine_ada)
+        self.group_box_text_engine.setLayout(group_box_text_engine_layout)
 
         # Temperature
         label_text_temperature = QLabel("Temperature :")
-        spin_box_text_temperature = QSpinBox()
-        spin_box_text_temperature.setRange(0,7)
+        self.spin_box_text_temperature = QSpinBox()
+        self.spin_box_text_temperature.setRange(0,7)
+        # Connect to File
+        self.spin_box_text_temperature.valueChanged.connect(self.text_temperature_value_changed)
 
         # Max Tokens
         label_text_max_tokens = QLabel("Max Tokens :")
-        spin_box_text_max_tokens = QSpinBox()
-        spin_box_text_max_tokens.setRange(10,500)
-        spin_box_text_max_tokens.setSingleStep(20)
+        self.spin_box_text_max_tokens = QSpinBox()
+        self.spin_box_text_max_tokens.setRange(50,500)
+        self.spin_box_text_max_tokens.setValue(100)
+        self.spin_box_text_max_tokens.setSingleStep(50)
+        # Connect to File
+        self.spin_box_text_max_tokens.valueChanged.connect(self.text_max_tokens_value_changed)
 
         text_engine_layout = QHBoxLayout()
         # text_engine_layout.addWidget(label_text_engine)
-        text_engine_layout.addWidget(group_box_text_engine)
+        text_engine_layout.addWidget(self.group_box_text_engine)
 
         text_temperature_layout = QHBoxLayout()
         text_temperature_layout.addWidget(label_text_temperature)
-        text_temperature_layout.addWidget(spin_box_text_temperature)
+        text_temperature_layout.addWidget(self.spin_box_text_temperature)
 
         text_max_token_layout = QHBoxLayout()
         text_max_token_layout.addWidget(label_text_max_tokens)
-        text_max_token_layout.addWidget(spin_box_text_max_tokens)
+        text_max_token_layout.addWidget(self.spin_box_text_max_tokens)
 
         # Merge Temperature and MaxTokens
         text_max_token_and_temperature_layout = QVBoxLayout()
         text_max_token_and_temperature_layout.addLayout(text_max_token_layout)
         text_max_token_and_temperature_layout.addLayout(text_temperature_layout)
-        # text_max_token_and_temperature_layout.setContentsMargins(10,40,10,10)
-        # margin : left, top, right, bottom
 
         # Layout of Text settings Tab
         text_layout = QVBoxLayout()
@@ -60,48 +70,31 @@ class EditQuerySettingsDialog(QDialog):
         text_layout.addLayout(text_max_token_and_temperature_layout)
         widget_text.setLayout(text_layout)
 
-
-        # text_layout = QGridLayout()
-        # text_layout.addLayout(text_engine_layout,0,0,4,3)
-        # # starts at row 0, col 0 and takes up 4 rows and 3 columns
-        # text_layout.addLayout(text_max_token_and_temperature_layout,0,2,2,1)
-        # # starts at row 0, col 2 and takes up 2 rows and 1 columns
-        # widget_text.setLayout(text_layout)
-
         # Authentication
         widget_auth = QWidget()
         label_apikey = QLabel("API key :")
-        text_edit_apikey = QTextEdit()
+        self.text_edit_apikey = QTextEdit()
 
         # Auth Buttons
         button_apikey_undo = QPushButton("Undo")
-        button_apikey_undo.clicked.connect(text_edit_apikey.undo)
+        button_apikey_undo.clicked.connect(self.text_edit_apikey.undo)
         button_apikey_redo = QPushButton("Redo")
-        button_apikey_redo.clicked.connect(text_edit_apikey.redo)
+        button_apikey_redo.clicked.connect(self.text_edit_apikey.redo)
+        button_apikey_save = QPushButton("Save")
+        button_apikey_save.clicked.connect(self.text_edit_apikey_save)
 
         # Merge auth buttons
         auth_buttons_layout = QHBoxLayout()
         auth_buttons_layout.addWidget(button_apikey_undo)
         auth_buttons_layout.addWidget(button_apikey_redo)
+        auth_buttons_layout.addWidget(button_apikey_save)
 
         # Layout of Auth Tab
         auth_layout = QVBoxLayout()
         auth_layout.addWidget(label_apikey)
-        auth_layout.addWidget(text_edit_apikey)
+        auth_layout.addWidget(self.text_edit_apikey)
         auth_layout.addLayout(auth_buttons_layout)
         widget_auth.setLayout(auth_layout)
-
-        # # Buttons
-        # widget_buttons = QWidget()
-        # button1 = QPushButton("Button 1")
-        # button2 = QPushButton("Button 2")
-        # button3 = QPushButton("Button 3")
-        #
-        # buttons_layout = QVBoxLayout()
-        # buttons_layout.addWidget(button1)
-        # buttons_layout.addWidget(button2)
-        # buttons_layout.addWidget(button3)
-        # widget_buttons.setLayout(buttons_layout)
 
         # Tab widget
         tab_widget = QTabWidget(self)  # self parent is needed here
@@ -113,8 +106,99 @@ class EditQuerySettingsDialog(QDialog):
         # tab_widget.addTab(widget_buttons, "Buttons")
 
 
+        # Confirmation Buttons
+        # self.button_cancel_changes = QPushButton("Cancel")
+        # self.button_save_changes = QPushButton("Save")
+
+        # Layout Confirmation Button
+        # confirm_button_layout = QHBoxLayout()
+        # confirm_button_layout.addWidget(self.button_cancel_changes)
+        # confirm_button_layout.addWidget(self.button_save_changes)
+
         widget_layout = QVBoxLayout()
         widget_layout.addWidget(tab_widget)
+        # widget_layout.addLayout(confirm_button_layout)
 
         self.setLayout(widget_layout)
 
+
+        # Load values
+        self.load_init()
+
+
+    # Functions
+    def text_edit_apikey_save(self):
+        print("API KEY SAVED")
+
+    def load_init(self):
+        storage = StorageQuerySettings()
+        settings_dic = storage.get_settings()
+
+        if settings_dic["model"]=="text-davinci-003" :
+            self.radio_button_text_engine_davinci.setChecked(True)
+        elif settings_dic["model"] == "curie":
+            self.radio_button_text_engine_curie.setChecked(True)
+        elif settings_dic["model"] == "babbage" :
+            self.radio_button_text_engine_babbage.setChecked(True)
+        elif settings_dic["model"] == "ada" :
+            self.radio_button_text_engine_ada.setChecked(True)
+
+        self.spin_box_text_temperature.setValue(settings_dic["temperature"])
+        self.spin_box_text_max_tokens.setValue(settings_dic["max_tokens"])
+
+
+    def text_max_tokens_value_changed(self):
+        new_value = self.spin_box_text_max_tokens.value()
+        print("Text Max tokens new value : ",new_value)
+        storage = StorageQuerySettings()
+        settings_dic = storage.get_settings()
+        settings_dic["max_tokens"] = new_value
+        storage.set_settings(settings_dic)
+
+    def text_temperature_value_changed(self):
+        new_value = self.spin_box_text_temperature.value()
+        print("Text Temperature new value : ", new_value)
+        storage = StorageQuerySettings()
+        settings_dic = storage.get_settings()
+        settings_dic["temperature"] = new_value
+        storage.set_settings(settings_dic)
+
+    def radio_button_text_engine_davinci_toggled(self,checked):
+        if (checked):
+            print("Radio Button Text Engine - Davinci : CHECKED")
+            storage = StorageQuerySettings()
+            settings_dic = storage.get_settings()
+            settings_dic["model"] = "text-davinci-003"
+            storage.set_settings(settings_dic)
+        else:
+            print("Radio Button Text Engine - Davinci : UNCHECKED")
+
+    def radio_button_text_engine_curie_toggled(self, checked):
+        if (checked):
+            print("Radio Button Text Engine - Curie : CHECKED")
+            storage = StorageQuerySettings()
+            settings_dic = storage.get_settings()
+            settings_dic["model"] = "curie"
+            storage.set_settings(settings_dic)
+        else:
+            print("Radio Button Text Engine - Curie : UNCHECKED")
+
+    def radio_button_text_engine_babbage_toggled(self, checked):
+        if (checked):
+            print("Radio Button Text Engine - Babbage : CHECKED")
+            storage = StorageQuerySettings()
+            settings_dic = storage.get_settings()
+            settings_dic["model"] = "babbage"
+            storage.set_settings(settings_dic)
+        else:
+            print("Radio Button Text Engine - Babbage : UNCHECKED")
+
+    def radio_button_text_engine_ada_toggled(self, checked):
+        if (checked):
+            print("Radio Button Text Engine - Ada : CHECKED")
+            storage = StorageQuerySettings()
+            settings_dic = storage.get_settings()
+            settings_dic["model"] = "ada"
+            storage.set_settings(settings_dic)
+        else:
+            print("Radio Button Text Engine - Ada : UNCHECKED")
