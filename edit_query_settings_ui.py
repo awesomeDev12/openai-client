@@ -135,13 +135,13 @@ class EditQuerySettingsDialog(QDialog):
         storage = StorageQuerySettings()
         settings_dic = storage.get_settings()
 
-        if settings_dic["model"]=="text-davinci-003" :
+        if settings_dic["model"] == "text-davinci-003" :
             self.radio_button_text_engine_davinci.setChecked(True)
-        elif settings_dic["model"] == "curie":
+        elif settings_dic["model"] == "text-curie-001":
             self.radio_button_text_engine_curie.setChecked(True)
-        elif settings_dic["model"] == "babbage" :
+        elif settings_dic["model"] == "text-babbage-001" :
             self.radio_button_text_engine_babbage.setChecked(True)
-        elif settings_dic["model"] == "ada" :
+        elif settings_dic["model"] == "text-ada-001" :
             self.radio_button_text_engine_ada.setChecked(True)
 
         self.spin_box_text_temperature.setValue(settings_dic["temperature"] * 100) # as Temperature is always b/w 0 and 1
@@ -179,7 +179,7 @@ class EditQuerySettingsDialog(QDialog):
             print("Radio Button Text Engine - Curie : CHECKED")
             storage = StorageQuerySettings()
             settings_dic = storage.get_settings()
-            settings_dic["model"] = "curie"
+            settings_dic["model"] = "text-curie-001"
             storage.set_settings(settings_dic)
         else:
             print("Radio Button Text Engine - Curie : UNCHECKED")
@@ -189,7 +189,7 @@ class EditQuerySettingsDialog(QDialog):
             print("Radio Button Text Engine - Babbage : CHECKED")
             storage = StorageQuerySettings()
             settings_dic = storage.get_settings()
-            settings_dic["model"] = "babbage"
+            settings_dic["model"] = "text-babbage-001"
             storage.set_settings(settings_dic)
         else:
             print("Radio Button Text Engine - Babbage : UNCHECKED")
@@ -199,7 +199,7 @@ class EditQuerySettingsDialog(QDialog):
             print("Radio Button Text Engine - Ada : CHECKED")
             storage = StorageQuerySettings()
             settings_dic = storage.get_settings()
-            settings_dic["model"] = "ada"
+            settings_dic["model"] = "text-ada-001"
             storage.set_settings(settings_dic)
         else:
             print("Radio Button Text Engine - Ada : UNCHECKED")
