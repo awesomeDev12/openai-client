@@ -74,15 +74,15 @@ class EditQuerySettingsDialog(QDialog):
         text_edit_apikey = QTextEdit()
 
         # Auth Buttons
-        button_apikey_save = QPushButton("Save")
-        # button_apikey_ok.clicked.connect(self.update_api_key)
         button_apikey_undo = QPushButton("Undo")
         button_apikey_undo.clicked.connect(text_edit_apikey.undo)
+        button_apikey_redo = QPushButton("Redo")
+        button_apikey_redo.clicked.connect(text_edit_apikey.redo)
 
         # Merge auth buttons
         auth_buttons_layout = QHBoxLayout()
         auth_buttons_layout.addWidget(button_apikey_undo)
-        auth_buttons_layout.addWidget(button_apikey_save)
+        auth_buttons_layout.addWidget(button_apikey_redo)
 
         # Layout of Auth Tab
         auth_layout = QVBoxLayout()
