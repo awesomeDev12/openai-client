@@ -22,7 +22,7 @@ class EditQuerySettingsDialog(QDialog):
         self.radio_button_text_engine_ada = QRadioButton("Ada")
         self.radio_button_text_engine_ada.toggled.connect(self.radio_button_text_engine_ada_toggled)
 
-        self.radio_button_text_engine_curie.setChecked(True)
+        # self.radio_button_text_engine_curie.setChecked(True)
 
         group_box_text_engine_layout = QVBoxLayout()
         group_box_text_engine_layout.addWidget(self.radio_button_text_engine_davinci)
@@ -34,7 +34,8 @@ class EditQuerySettingsDialog(QDialog):
         # Temperature
         label_text_temperature = QLabel("Temperature :")
         self.spin_box_text_temperature = QSpinBox()
-        self.spin_box_text_temperature.setRange(0,7)
+        self.spin_box_text_temperature.setRange(0,100)
+        self.spin_box_text_temperature.setSingleStep(10)
         # Connect to File
         self.spin_box_text_temperature.valueChanged.connect(self.text_temperature_value_changed)
 
@@ -42,7 +43,7 @@ class EditQuerySettingsDialog(QDialog):
         label_text_max_tokens = QLabel("Max Tokens :")
         self.spin_box_text_max_tokens = QSpinBox()
         self.spin_box_text_max_tokens.setRange(50,500)
-        self.spin_box_text_max_tokens.setValue(100)
+        # self.spin_box_text_max_tokens.setValue(100)
         self.spin_box_text_max_tokens.setSingleStep(50)
         # Connect to File
         self.spin_box_text_max_tokens.valueChanged.connect(self.text_max_tokens_value_changed)
@@ -143,7 +144,7 @@ class EditQuerySettingsDialog(QDialog):
         elif settings_dic["model"] == "ada" :
             self.radio_button_text_engine_ada.setChecked(True)
 
-        self.spin_box_text_temperature.setValue(settings_dic["temperature"])
+        self.spin_box_text_temperature.setValue(settings_dic["temperature"] * 100) # as Temperature is always b/w 0 and 1
         self.spin_box_text_max_tokens.setValue(settings_dic["max_tokens"])
 
 
@@ -156,7 +157,7 @@ class EditQuerySettingsDialog(QDialog):
         storage.set_settings(settings_dic)
 
     def text_temperature_value_changed(self):
-        new_value = self.spin_box_text_temperature.value()
+        new_value = (self.spin_box_text_temperature.value())/100 # Temperature is between 0 and 1
         print("Text Temperature new value : ", new_value)
         storage = StorageQuerySettings()
         settings_dic = storage.get_settings()

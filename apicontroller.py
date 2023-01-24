@@ -2,25 +2,24 @@
 
 import openai
 from apikey import OPENAI_API_KEY
-from querytextsettings import QueryTextSettings
+from storage_query_settings import StorageQuerySettings
 
 openai.api_key = OPENAI_API_KEY
 
 class APIController:
     def __init__(self):
-        self.query_text_settings = QueryTextSettings(model="curie",temperature=0,max_tokens=60)
-        self.query_text_settings.set_model("text-davinci-003")
-        self.query_text_settings.set_max_tokens(500)
+        print("API controller constructor called")
 
-        print(self.query_text_settings.get_settings())
-
-    # Get response usingthe api
+    # Get response using the api
     def get_response_string(self,prompt_string):
         if len(prompt_string) < 6:
             return {"status":False, "text": "Invalid Input : Prompt is too small"}
 
+        storage_query_settings = StorageQuerySettings()
+        settings_dic = storage_query_settings.get_settings()
+        print("Query Settings : ",settings_dic)
         # print(self.response.choices[0].text)
-        response = openai.Completion.create(model=self.query_text_settings.model, prompt=prompt_string, temperature=self.query_text_settings.temperature, max_tokens=self.query_text_settings.max_tokens)
+        response = openai.Completion.create(model=settings_dic["model"], prompt=prompt_string, temperature=settings_dic["temperature"], max_tokens=settings_dic["max_tokens"])
         output_dic = {"status":True, "text" : response.choices[0].text}
         # return response.choices[0].text
         return output_dic
