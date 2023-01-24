@@ -1,7 +1,7 @@
 from PySide6.QtCore import  QSize
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QMainWindow, QToolBar, QPushButton, QStatusBar
-from widget import Widget
+from widget_main import MainWidget
 from menu_bar_main import MenuBarMain
 from status_bar_main import StatusBarMain
 from toolbar_main import ToolBarMain
@@ -13,7 +13,7 @@ class MainWindow (QMainWindow):
         self.setWindowTitle("Custom Main Window")
 
         # Central Widget
-        widget = Widget()
+        widget = MainWidget()
 
         # Working with Status Bar
         status_bar = StatusBarMain()

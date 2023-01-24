@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMenuBar, QMessageBox
 from PySide6.QtGui import QAction
 from storagehistory import StorageHistory
+from edit_query_settings_ui import EditQuerySettingsDialog
 class MenuBarMain(QMenuBar):
     def __init__(self,app,main_widget,status_bar):
         super().__init__()
@@ -46,12 +47,6 @@ class MenuBarMain(QMenuBar):
         edit_redo_action.triggered.connect(main_widget.input_text_edit.redo)
         edit_menu.addAction(edit_redo_action)
 
-        # edit_menu.addAction("Cut")
-        # edit_menu.addAction("Paste")
-        # edit_menu.addAction("Paste")
-        # edit_menu.addAction("Undo")
-        # edit_menu.addAction("Redo")
-
         # History
         history_menu = self.addMenu("History")
 
@@ -69,14 +64,28 @@ class MenuBarMain(QMenuBar):
 
         # Settings menu
         settings_menu = self.addMenu("Setting")
-        settings_menu.addAction("Ada")
-        settings_menu.addAction("Babbage")
-        settings_menu.addAction("Curie")
-        settings_menu.addAction("Da Vinci")
+
+        # Edit Settings Action
+        edit_settings_action = QAction("Edit Settings", self)
+        edit_settings_action.setStatusTip("Press this to Edit Query Settings")
+        edit_settings_action.triggered.connect(self.edit_settings_action_triggered)
+        settings_menu.addAction(edit_settings_action)
+
+        # settings_menu.addAction("Ada")
+        # settings_menu.addAction("Babbage")
+        # settings_menu.addAction("Curie")
+        # settings_menu.addAction("Da Vinci")
 
         # Other Menus
         self.addMenu("Window")
         self.addMenu("Help")
+
+
+
+    def edit_settings_action_triggered(self):
+        print("Edit Query Settings")
+        dialog = EditQuerySettingsDialog()
+        dialog.exec()
 
 
     # History Actions
@@ -92,6 +101,7 @@ class MenuBarMain(QMenuBar):
         # history_string = json.dumps(history_list, indent=4)
 
         # message.setText(f"This is the chat history {history_string}")
+        message.setText(f"This is the chat history ")
         message.setInformativeText("Do you want to do something about it")
         # message.setIcon(QMessageBox.Critical)
         message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)

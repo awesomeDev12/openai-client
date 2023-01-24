@@ -6,7 +6,7 @@ from apicontroller import APIController
 from storagehistory import StorageHistory
 import json
 
-class Widget(QWidget):
+class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
 
