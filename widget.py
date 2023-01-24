@@ -3,7 +3,7 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QTextBrowser, QLineEdit, QLabel
 from PySide6.QtGui import QClipboard, QTextDocument
 from apicontroller import APIController
-from storage import Storage
+from storagehistory import StorageHistory
 import json
 
 class Widget(QWidget):
@@ -11,7 +11,7 @@ class Widget(QWidget):
         super().__init__()
 
         self.api_controller = APIController()
-        self.storage = Storage()
+        self.storage = StorageHistory()
         # font = QtGui.QFont("Arial", 20)
         # self.setWindowTitleFont(font)
         self.setWindowTitle("Open AI client")
@@ -136,7 +136,7 @@ class Widget(QWidget):
             # output_string = output_dic["text"].split("\n", 2)[2]
             output_string = output_dic["text"]
             # New Query added to history
-            storage = Storage()
+            storage = StorageHistory()
             storage.insert(input_string, output_string)
         else:
             # If the response status is failure the Print the Error message
@@ -162,7 +162,7 @@ class Widget(QWidget):
     def show_history_button_clicked(self):
         print("Show History Button clicked")
 
-        storage = Storage()
+        storage = StorageHistory()
         history_list = storage.get_history()
         history_list.reverse()
 

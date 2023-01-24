@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QTableWidget
 
-from storage import Storage
+from storagehistory import StorageHistory
 class TableWidget(QTableWidget):
     def __init__(self):
         super().__init__()
@@ -10,7 +10,7 @@ class TableWidget(QTableWidget):
         # self.setColumnCount(3)
 
     def fill(self):
-        storage = Storage()
+        storage = StorageHistory()
         history_list = storage.get_history()
         self.nrows  = len(history_list)
         self.setRowCount(self.nrows)

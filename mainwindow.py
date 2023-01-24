@@ -2,7 +2,7 @@ from PySide6.QtCore import  QSize
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QToolBar, QPushButton, QStatusBar, QMessageBox
 import json
-from storage import Storage
+from storagehistory import StorageHistory
 from widget import Widget
 class MainWindow (QMainWindow):
     def __init__(self, app):
@@ -138,7 +138,7 @@ class MainWindow (QMainWindow):
         message.setMinimumSize(700,300)
         message.setWindowTitle("Chat History")
 
-        storage = Storage()
+        storage = StorageHistory()
         history_list = storage.get_history()
         history_list.reverse()
         history_string = json.dumps(history_list, indent=4)
@@ -165,7 +165,7 @@ class MainWindow (QMainWindow):
         message.setMinimumSize(700, 300)
         message.setWindowTitle("Clear Chat History")
 
-        # storage = Storage()
+        # storage = StorageHistory()
         # history_list = storage.get_history()
         # history_list.reverse()
         # history_string = json.dumps(history_list, indent=4)
@@ -180,7 +180,7 @@ class MainWindow (QMainWindow):
         ret = message.exec()
         if ret == QMessageBox.Ok:
             print("User chose Ok")
-            storage = Storage()
+            storage = StorageHistory()
             storage.clear_history()
         elif ret == QMessageBox.Cancel:
             print("User chose Cancel")

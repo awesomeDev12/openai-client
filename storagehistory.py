@@ -1,7 +1,7 @@
 import json
 import os
 import datetime
-class Storage:
+class StorageHistory:
     def __init__(self):
         self.filename = "/home/darklord/Desktop/openai-client/history_log.json"
         self.history_list = self.read()
