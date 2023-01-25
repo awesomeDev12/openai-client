@@ -10,10 +10,9 @@ python main.py
 ```
 
 
-To store the API key
-create apikey.py file
-and write the following lines inside it
-```
-""" My OPENAI_API_KEY """
-OPENAI_API_KEY = "Your API key should be enclosed within double quotes"
-```
+To add your API key
+
+1. Go to Settings -> Edit Settings -> API
+2. Paste or Type your API key 
+3. Click on Save
+

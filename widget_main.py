@@ -1,32 +1,32 @@
 import PySide6.QtCore
 from PySide6 import QtGui
-from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton, QMessageBox, QTextBrowser, QLineEdit, QLabel
+from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QMessageBox, QTextBrowser, QLineEdit, QLabel
 from PySide6.QtGui import QClipboard, QTextDocument
 from apicontroller import APIController
 from storagehistory import StorageHistory
 import json
 
+
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.api_controller = APIController()
-        self.storage = StorageHistory()
         # font = QtGui.QFont("Arial", 20)
         # self.setWindowTitleFont(font)
         self.setWindowTitle("Open AI client")
 
-
-
-
         self.setMinimumSize(700, 500)
         self.input_text_edit = QTextEdit()
         self.input_text_edit.setFixedHeight(100)
+        self.input_text_edit.setPlaceholderText("INPUT")
 
         self.output_text_edit = QTextEdit()
+        self.output_text_edit.setPlaceholderText("OUTPUT")
 
         self.search_bar = QLineEdit()
         self.history_text_browser = QTextBrowser()
+        self.history_text_browser.setPlaceholderText("CHAT HISTORY")
 
         # connect the search bar to the text browser
         self.search_bar.textChanged.connect(self.history_text_browser.find)
@@ -58,9 +58,6 @@ class MainWidget(QWidget):
 
         history_previous_button = QPushButton("Previous")
         history_previous_button.clicked.connect(self.previous_occurence)
-
-
-
 
         # Layout
         h_layout1 = QHBoxLayout()
@@ -95,15 +92,13 @@ class MainWidget(QWidget):
 
         self.setLayout(v_layout)
 
-
-
     def next_occurence(self):
         search_pattern = self.search_bar.text()
         self.history_text_browser.find(search_pattern)
 
     def previous_occurence(self):
         search_pattern = self.search_bar.text()
-        self.history_text_browser.find(search_pattern,QTextDocument.FindBackward)
+        self.history_text_browser.find(search_pattern, QTextDocument.FindBackward)
 
     def submit_button_clicked(self):
         print("Submit button clicked")
@@ -127,10 +122,10 @@ class MainWidget(QWidget):
         else:
             print("User chose unknown button")
 
-
     def query_submit(self):
         input_string = self.input_text_edit.toPlainText()
-        output_dic = self.api_controller.get_response_string(input_string)
+        api_controller = APIController()
+        output_dic = api_controller.get_response_string(input_string)
         if output_dic["status"] == True:
             # First two lines provided by the API is empty
             # output_string = output_dic["text"].split("\n", 2)[2]
@@ -144,6 +139,7 @@ class MainWidget(QWidget):
 
         self.output_text_edit.clear()
         self.output_text_edit.setPlainText(output_string)
+
     def copy_output_button_clicked(self):
         output_string = self.output_text_edit.toPlainText()
         clipboard = QClipboard()
@@ -152,7 +148,8 @@ class MainWidget(QWidget):
     def save_button_clicked(self):
         input_string = self.input_text_edit.toPlainText()
         output_string = self.output_text_edit.toPlainText()
-        self.storage.insert(input_string,output_string)
+        storage = StorageHistory()
+        storage.insert(input_string, output_string)
 
     def clear_all_button_clicked(self):
         print("Clear Input and Output Text Boxes")
@@ -167,9 +164,9 @@ class MainWidget(QWidget):
         history_list.reverse()
 
         history_string = ""
-        for i in  range(len(history_list)):
-            history_string += "Input : \n" + history_list[i]["input"]+"\n"
-            history_string += "Output : " + history_list[i]["output"]+"\n"
-            history_string += "DateTIme : \n" + history_list[i]["datetime"]+"\n"
+        for i in range(len(history_list)):
+            history_string += "Input : \n" + history_list[i]["input"] + "\n"
+            history_string += "Output : " + history_list[i]["output"] + "\n"
+            history_string += "DateTIme : \n" + history_list[i]["datetime"] + "\n"
 
         self.history_text_browser.setPlainText(history_string)
