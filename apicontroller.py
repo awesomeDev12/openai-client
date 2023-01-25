@@ -1,20 +1,50 @@
 """ Open AI Api"""
 
 import openai
-from apikey import OPENAI_API_KEY
 from storage_query_settings import StorageQuerySettings
-
-openai.api_key = OPENAI_API_KEY
+import os
 
 class APIController:
     def __init__(self):
         print("API controller constructor called")
+        self.filename = "/home/darklord/Desktop/openai-client/secret_apikey.txt"
+
+
+    def get_apikey(self):
+        # If the file does not exist then create the file
+        if not os.path.exists(self.filename):
+            open(self.filename, 'w').close()
+        f_data = ""
+        # if the file is empty, them empty string
+        if os.stat(self.filename).st_size == 0:
+            f_data = ""
+        else :# The file contains the current api key (valid/unvalid)
+            with open(self.filename, "r") as f:
+                f_data = f.readline()
+        # print(f_data)
+        return f_data
+
+    def set_apikey(self, new_apikey):
+        # If the file does not exist then create the file
+        if not os.path.exists(self.filename):
+            open(self.filename, 'w').close()
+
+        # Writing to secret_apikey.txt
+        with open(self.filename, "w") as outfile:
+            outfile.write(new_apikey)
+        print("API key Set by APIController")
 
     # Get response using the api
     def get_response_string(self,prompt_string):
-        if len(prompt_string) < 6:
+        if len(prompt_string) < 15:
             return {"status":False, "text": "Invalid Input : Prompt is too small"}
 
+        OPENAI_API_KEY = self.get_apikey()
+        if len(OPENAI_API_KEY) < 25:
+            return {"status":False, "text" : "Invalid API key : API key is too small"}
+
+        # Assuming that API key is valid
+        openai.api_key = OPENAI_API_KEY
         storage_query_settings = StorageQuerySettings()
         settings_dic = storage_query_settings.get_settings()
         print("Query Settings : ",settings_dic)

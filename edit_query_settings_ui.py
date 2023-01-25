@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit
 from PySide6.QtCore import QSize
 from storage_query_settings import StorageQuerySettings
+from apicontroller import APIController
 class EditQuerySettingsDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -75,6 +76,8 @@ class EditQuerySettingsDialog(QDialog):
         widget_auth = QWidget()
         label_apikey = QLabel("API key :")
         self.text_edit_apikey = QTextEdit()
+        # self.text_edit_apikey.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+
 
         # Auth Buttons
         button_apikey_undo = QPushButton("Undo")
@@ -130,6 +133,8 @@ class EditQuerySettingsDialog(QDialog):
     # Functions
     def text_edit_apikey_save(self):
         print("API KEY SAVED")
+        api_controller =  APIController()
+        api_controller.set_apikey(self.text_edit_apikey.toPlainText())
 
     def load_init(self):
         storage = StorageQuerySettings()
@@ -146,6 +151,11 @@ class EditQuerySettingsDialog(QDialog):
 
         self.spin_box_text_temperature.setValue(settings_dic["temperature"] * 100) # as Temperature is always b/w 0 and 1
         self.spin_box_text_max_tokens.setValue(settings_dic["max_tokens"])
+
+        # Load API key
+        api_controller = APIController()
+        self.text_edit_apikey.setPlainText(api_controller.get_apikey())
+
 
 
     def text_max_tokens_value_changed(self):
