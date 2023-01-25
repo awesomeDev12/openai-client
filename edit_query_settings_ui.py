@@ -1,8 +1,12 @@
-from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit, QMessageBox
+from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout
+from PySide6.QtWidgets import QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit, QMessageBox
+from PySide6.QtGui import QClipboard
 from PySide6.QtGui import QTextOption
 from PySide6.QtCore import QSize
 from storage_query_settings import StorageQuerySettings
 from apicontroller import APIController
+
+
 class EditQuerySettingsDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -36,7 +40,7 @@ class EditQuerySettingsDialog(QDialog):
         # Temperature
         label_text_temperature = QLabel("Temperature :")
         self.spin_box_text_temperature = QSpinBox()
-        self.spin_box_text_temperature.setRange(0,100)
+        self.spin_box_text_temperature.setRange(0, 100)
         self.spin_box_text_temperature.setSingleStep(10)
         # Connect to File
         self.spin_box_text_temperature.valueChanged.connect(self.text_temperature_value_changed)
@@ -44,7 +48,7 @@ class EditQuerySettingsDialog(QDialog):
         # Max Tokens
         label_text_max_tokens = QLabel("Max Tokens :")
         self.spin_box_text_max_tokens = QSpinBox()
-        self.spin_box_text_max_tokens.setRange(50,500)
+        self.spin_box_text_max_tokens.setRange(50, 500)
         # self.spin_box_text_max_tokens.setValue(100)
         self.spin_box_text_max_tokens.setSingleStep(50)
         # Connect to File
@@ -77,8 +81,9 @@ class EditQuerySettingsDialog(QDialog):
         widget_auth = QWidget()
         label_apikey = QLabel("API key :")
         self.text_edit_apikey = QTextEdit()
-        self.text_edit_apikey.setFontFamily("monospace")
-        # self.text_edit_apikey.setAutoFormatting(QTextEdit.AutoFormattingFlag.AutoNone)
+        self.text_edit_apikey.setStyleSheet("font-size: 16pt; font-family : monospace;")
+        # self.text_edit_apikey.setFontFamily("monospace")
+        # self.text_edit_apikey.setAutoFormatting(QTextEdit.AutoFormattingFlag.AutoAll)
         self.text_edit_apikey.setLineWrapMode(QTextEdit.LineWrapMode.FixedColumnWidth)
         self.text_edit_apikey.setLineWrapColumnOrWidth(20)
         # self.text_edit_apikey.setWordWrapMode(QTextOption.NoWrap)
@@ -113,9 +118,8 @@ class EditQuerySettingsDialog(QDialog):
         # Add tabs
         tab_widget.addTab(widget_text, "Text")
         # tab_widget.addTab(widget_form, "Information")
-        tab_widget.addTab(widget_auth, "API") # Authentication
+        tab_widget.addTab(widget_auth, "API")  # Authentication
         # tab_widget.addTab(widget_buttons, "Buttons")
-
 
         # Confirmation Buttons
         # self.button_cancel_changes = QPushButton("Cancel")
@@ -132,10 +136,17 @@ class EditQuerySettingsDialog(QDialog):
 
         self.setLayout(widget_layout)
 
-
         # Load values
         self.load_init()
 
+    def text_edit_apikey_paste(self):
+        print("Clipboard content Pasted to QTextEdit APIkey")
+        self.text_edit_apikey.clear()
+        clipboard = QClipboard()
+        clipboard_content = clipboard.text()
+        self.text_edit_apikey.setPlainText(clipboard_content)
+        self.text_edit_apikey.setStyleSheet("font-size: 16pt; font-family : monospace;")
+        # self.text_edit_apikey.setFontFamily("monospace")
 
     # Functions
     def text_edit_apikey_save(self):
@@ -160,47 +171,44 @@ class EditQuerySettingsDialog(QDialog):
         else:
             print("User chose unknown button")
 
-
-
     def load_init(self):
         storage = StorageQuerySettings()
         settings_dic = storage.get_settings()
 
-        if settings_dic["model"] == "text-davinci-003" :
+        if settings_dic["model"] == "text-davinci-003":
             self.radio_button_text_engine_davinci.setChecked(True)
         elif settings_dic["model"] == "text-curie-001":
             self.radio_button_text_engine_curie.setChecked(True)
-        elif settings_dic["model"] == "text-babbage-001" :
+        elif settings_dic["model"] == "text-babbage-001":
             self.radio_button_text_engine_babbage.setChecked(True)
-        elif settings_dic["model"] == "text-ada-001" :
+        elif settings_dic["model"] == "text-ada-001":
             self.radio_button_text_engine_ada.setChecked(True)
 
-        self.spin_box_text_temperature.setValue(settings_dic["temperature"] * 100) # as Temperature is always b/w 0 and 1
+        self.spin_box_text_temperature.setValue(
+            settings_dic["temperature"] * 100)  # as Temperature is always b/w 0 and 1
         self.spin_box_text_max_tokens.setValue(settings_dic["max_tokens"])
 
         # Load API key
         api_controller = APIController()
         self.text_edit_apikey.setPlainText(api_controller.get_apikey())
 
-
-
     def text_max_tokens_value_changed(self):
         new_value = self.spin_box_text_max_tokens.value()
-        print("Text Max tokens new value : ",new_value)
+        print("Text Max tokens new value : ", new_value)
         storage = StorageQuerySettings()
         settings_dic = storage.get_settings()
         settings_dic["max_tokens"] = new_value
         storage.set_settings(settings_dic)
 
     def text_temperature_value_changed(self):
-        new_value = (self.spin_box_text_temperature.value())/100 # Temperature is between 0 and 1
+        new_value = (self.spin_box_text_temperature.value()) / 100  # Temperature is between 0 and 1
         print("Text Temperature new value : ", new_value)
         storage = StorageQuerySettings()
         settings_dic = storage.get_settings()
         settings_dic["temperature"] = new_value
         storage.set_settings(settings_dic)
 
-    def radio_button_text_engine_davinci_toggled(self,checked):
+    def radio_button_text_engine_davinci_toggled(self, checked):
         if (checked):
             print("Radio Button Text Engine - Davinci : CHECKED")
             storage = StorageQuerySettings()
