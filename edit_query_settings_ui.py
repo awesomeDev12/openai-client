@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit
+from PySide6.QtWidgets import QDialog, QWidget, QLabel, QTabWidget, QLineEdit, QHBoxLayout, QVBoxLayout, QGridLayout, QPushButton, QSpinBox, QGroupBox, QRadioButton, QTextEdit, QMessageBox
+from PySide6.QtGui import QTextOption
 from PySide6.QtCore import QSize
 from storage_query_settings import StorageQuerySettings
 from apicontroller import APIController
@@ -76,21 +77,27 @@ class EditQuerySettingsDialog(QDialog):
         widget_auth = QWidget()
         label_apikey = QLabel("API key :")
         self.text_edit_apikey = QTextEdit()
+        self.text_edit_apikey.setFontFamily("monospace")
+        # self.text_edit_apikey.setAutoFormatting(QTextEdit.AutoFormattingFlag.AutoNone)
+        self.text_edit_apikey.setLineWrapMode(QTextEdit.LineWrapMode.FixedColumnWidth)
+        self.text_edit_apikey.setLineWrapColumnOrWidth(20)
+        # self.text_edit_apikey.setWordWrapMode(QTextOption.NoWrap)
+        # self.text_edit_apikey.setLineWrapMode(QTextEdit.LineWrapMode.WordWrap)
         # self.text_edit_apikey.setEchoMode(QLineEdit.PasswordEchoOnEdit)
-
+        # self.text_edit_apikey.setMaxLength(50)
 
         # Auth Buttons
         button_apikey_undo = QPushButton("Undo")
         button_apikey_undo.clicked.connect(self.text_edit_apikey.undo)
-        button_apikey_redo = QPushButton("Redo")
-        button_apikey_redo.clicked.connect(self.text_edit_apikey.redo)
+        button_apikey_paste = QPushButton("Paste")
+        button_apikey_paste.clicked.connect(self.text_edit_apikey.paste)
         button_apikey_save = QPushButton("Save")
         button_apikey_save.clicked.connect(self.text_edit_apikey_save)
 
         # Merge auth buttons
         auth_buttons_layout = QHBoxLayout()
         auth_buttons_layout.addWidget(button_apikey_undo)
-        auth_buttons_layout.addWidget(button_apikey_redo)
+        auth_buttons_layout.addWidget(button_apikey_paste)
         auth_buttons_layout.addWidget(button_apikey_save)
 
         # Layout of Auth Tab
@@ -132,9 +139,28 @@ class EditQuerySettingsDialog(QDialog):
 
     # Functions
     def text_edit_apikey_save(self):
-        print("API KEY SAVED")
-        api_controller =  APIController()
-        api_controller.set_apikey(self.text_edit_apikey.toPlainText())
+        print("API KEY SAVE Button Clicked")
+        message = QMessageBox()
+        message.setMinimumSize(700, 300)
+        message.setWindowTitle("Save API key")
+        message.setText("Do you want to set a new API key")
+        message.setInformativeText("Think Carefully Then Decide")
+        message.setIcon(QMessageBox.Question)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        message.setDefaultButton(QMessageBox.Cancel)
+
+        # Show the message box
+        ret = message.exec()
+        if ret == QMessageBox.Ok:
+            print("User chose Ok")
+            api_controller = APIController()
+            api_controller.set_apikey(self.text_edit_apikey.toPlainText())
+        elif ret == QMessageBox.Cancel:
+            print("User chose Cancel")
+        else:
+            print("User chose unknown button")
+
+
 
     def load_init(self):
         storage = StorageQuerySettings()
