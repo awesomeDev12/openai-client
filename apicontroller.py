@@ -45,7 +45,7 @@ class APIController:
         # Assuming that API key is valid
         openai.api_key = OPENAI_API_KEY
         storage_query_settings = StorageQuerySettings()
-        settings_dic = storage_query_settings.get_settings()
+        settings_dic = storage_query_settings.get_text_settings()
         print("Query Settings : ", settings_dic)
         # print(self.response.choices[0].text)
 

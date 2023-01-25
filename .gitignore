@@ -4,5 +4,6 @@ venv/
 apikey.py
 log.txt
 history_log.json
-query_settings.json
+query_text_settings.json
+query_image_settings.json
 secret_apikey.txt
