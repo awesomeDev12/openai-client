@@ -1,29 +1,47 @@
 # Open AI client
 
-### Install required python modules
+## Linux
+
+#### Install necessary python modules
 ```
 pip install --upgrade PySide6
 pip install --upgrade openai
 ```
 
-### Clone the project
+#### Clone project
 ```
 git clone https://github.com/awesomeDev12/openai-client.git ~/Desktop/openai-client/
 ```
 
-### Copy the Desktop entry
+#### Generate Desktop entry
 ```
 cp  ~/Desktop/openai-client/OpenAIClient.desktop ~/.local/share/applications/OpenAIClient.desktop
 ```
 
-
-### Add your API key
+#### Add your API key
 
 1. Go to Settings -> Edit Settings -> API
 2. Paste or Type your API key 
 3. Click on Save
 
-> **Warning:** The above method works only for Linux operating system.
+### Uninstall
+#### Remove Desktop Entry
+```
+rm ~/.local/share/applications/OpenAIClient.desktop
+```
+
+#### Remove Files
+```
+sudo rm -r ~/Desktop/openai-client
+```
+
+## Windows
+
+> **Warning:** Windows is not supported yet
+
+## MacOS
+
+> **Warning:** MacOS is not supported yet
 
 
 <!-- For developers -->
