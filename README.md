@@ -1,18 +1,18 @@
 # Open AI client
 
-First clone the project
+### Clone the project
 
 ```
 git clone https://github.com/awesomeDev12/openai-client.git ~/Desktop/openai-client/
 ```
 
-To copy the desktop entry
+### Copy desktop entry
 ```
 cp  ~/Desktop/openai-client/OpenAIClient.desktop ~/.local/share/applications/OpenAIClient.desktop
 ```
 
 
-To add your API key
+### Add your API key
 
 1. Go to Settings -> Edit Settings -> API
 2. Paste or Type your API key 
@@ -20,13 +20,13 @@ To add your API key
 
 
 
-For developers
+<!-- For developers -->
 
-To run 
-```
-bash launch.sh
-```
-or 
-```
-python main.py
-```
+<!-- To run --> 
+<!-- ``` -->
+<!-- bash launch.sh -->
+<!-- ``` -->
+<!-- or --> 
+<!-- ``` -->
+<!-- python main.py -->
+<!-- ``` -->
