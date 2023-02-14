@@ -4,8 +4,14 @@ import os
 
 class StorageQuerySettings:
     def __init__(self):
-        self.filename_text = "/home/darklord/Desktop/openai-client/query_text_settings.json"
-        self.filename_image = "/home/darklord/Desktop/openai-client/query_image_settings.json"
+        # dirname = os.path.dirname(__file__)
+        # filename = os.path.join(dirname, 'relative/path/to/file/you/want')
+
+        dirname = os.path.dirname(__file__)
+        self.filename_text = os.path.join(dirname, 'query_text_settings.json')
+        self.filename_image = os.path.join(dirname, 'query_image_settings.json')
+        # self.filename_text = "/home/darklord/Desktop/openai-client/query_text_settings.json"
+        # self.filename_image = "/home/darklord/Desktop/openai-client/query_image_settings.json"
 
 
     # Text settings

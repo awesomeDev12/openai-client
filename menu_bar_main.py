@@ -106,7 +106,10 @@ class MenuBarMain(QMenuBar):
         message.setWindowTitle("Reference Manual")
 
         f_data = ""
-        filename = "/home/darklord/Desktop/openai-client/reference_manual.txt"
+        # filename = "/home/darklord/Desktop/openai-client/reference_manual.txt"
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'reference_manual.txt')
+
         # If File does not exist create and empty file
         if not os.path.exists(filename):
             open(filename, 'w').close()
@@ -137,7 +140,10 @@ class MenuBarMain(QMenuBar):
         message.setWindowTitle("About OpenAI client")
 
         f_data = ""
-        filename = "/home/darklord/Desktop/openai-client/about_application.txt"
+        # filename = "/home/darklord/Desktop/openai-client/about_application.txt"
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'about_application.txt')
+
         # If File does not exist create and empty file
         if not os.path.exists(filename):
             open(filename, 'w').close()
@@ -169,7 +175,10 @@ class MenuBarMain(QMenuBar):
         message.setWindowTitle("Pricing Details")
 
         pricing_data = ""
-        filename = "/home/darklord/Desktop/openai-client/pricing_details.txt"
+        # filename = "/home/darklord/Desktop/openai-client/pricing_details.txt"
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'pricing_details.txt')
+
         # If File does not exist create and empty file
         if not os.path.exists(filename):
             open(filename, 'w').close()

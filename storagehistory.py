@@ -3,7 +3,10 @@ import os
 import datetime
 class StorageHistory:
     def __init__(self):
-        self.filename = "/home/darklord/Desktop/openai-client/history_log.json"
+        # self.filename = "/home/darklord/Desktop/openai-client/history_log.json"
+
+        dirname = os.path.dirname(__file__)
+        self.filename = os.path.join(dirname, 'history_log.json')
 
     def get_history(self):
         # If file does not exist then create an empty file

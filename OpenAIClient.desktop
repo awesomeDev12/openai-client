@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=bash -c "cd $(xdg-user-dir DESKTOP) && ./openai-client/launch.sh"
+Name=OpenAI client
+Comment=OpenAI client for Desktop
+Icon=$(xdg-user-dir DESKTOP)/openai-client/images/icons/desktop_icon.jpg
+

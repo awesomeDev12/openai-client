@@ -8,7 +8,10 @@ import os
 class APIController:
     def __init__(self):
         print("API controller constructor called")
-        self.filename = "/home/darklord/Desktop/openai-client/secret_apikey.txt"
+        # self.filename = "/home/darklord/Desktop/openai-client/secret_apikey.txt"
+
+        dirname = os.path.dirname(__file__)
+        self.filename = os.path.join(dirname, 'secret_apikey.txt')
 
     def get_apikey(self):
         # If the file does not exist then create the file
